@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Remove Heroku related keys
+for i in ~/.ssh/id_heroku_*; do
+  if [[ $i == *.pub ]]; then
+    continue
+  fi
+
+  ssh-add -d $i
+done
+
+# Logout
+heroku logout
+
+# Login
+heroku login
+
+# Readd correct key
+ssh-add ~/.ssh/id_heroku_$1
