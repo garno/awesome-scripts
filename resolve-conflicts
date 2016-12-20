@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# NOTE: This hasn't been tested with a `both deleted` situation.
+#       It might open a deleted file, will update once I encounter it.
+files=$(git diff --name-only --diff-filter=U)
+
+for file in $files; do
+  $EDITOR $file
+done
