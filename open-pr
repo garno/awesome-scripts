@@ -5,21 +5,27 @@ branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\
 
 # Retrieve destination branch
 if [[ $1 ]]; then
-  destination_branch=$1
+    destination_branch=$1
+
+    # Parse previous branch if “-” is specified as destination branch
+    if [[ $destination_branch == '-' ]]; then
+      destination_branch=$(git rev-parse --symbolic-full-name @{-1})
+      destination_branch=${destination_branch#*refs/heads/}
+    fi;
 else
-  # Try to extract the destination from the current branch
-  destination_branch=${branch%--*}
+    # Try to extract the destination from the current branch
+    destination_branch=${branch%--*}
 
-  # Fall back to the default origin branch
-  if [[ $branch == $destination_branch ]]; then
-    master_exists=$(git branch | grep 'master')
+    # Fall back to the default origin branch
+    if [[ $branch == $destination_branch ]]; then
+      master_exists=$(git branch | grep 'master')
 
-    if [[ -z $master_exists ]]; then
-      destination_branch=develop
-    else
-      destination_branch=master
+      if [[ -z $master_exists ]]; then
+        destination_branch=develop
+      else
+        destination_branch=master
+      fi
     fi
-  fi
 fi;
 
 # Determine the default origin branch
