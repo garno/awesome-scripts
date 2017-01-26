@@ -1,0 +1,7 @@
+#!/bin/sh
+
+git co -b feature/$1
+git commit --allow-empty -m "[WIP] $2"
+git push origin feature/$1
+
+open-pr # such meta
