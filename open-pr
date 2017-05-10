@@ -40,7 +40,7 @@ if [[ $branch == $destination_branch ]]; then
 fi
 
 # Retrieve repository URL
-repository_url=$(git remote get-url origin | sed -e 's/git@//' -e 's/.git//' -e 's/:/\//')
+repository_url=$(git remote get-url origin | sed -e 's/git@//' -e 's/\.git//' -e 's/:/\//')
 
 if [[ $repository_url == github* ]]; then
   pr_url=https://$repository_url/compare/$destination_branch...$branch
